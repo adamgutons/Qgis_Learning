@@ -1,6 +1,21 @@
 import os
 from qgis.core import *
+from osgeo import ogr
 
+print os.getcwd()
+
+driver = ogr.GetDriverByName("OpenFileGDB")
+
+ds = driver.Open("/home/bedevere/Qgis_Python/RH_SampleData.gdb", 0)
+
+print ds.GetLayerCount()
+
+for i in range(ds.GetLayerCount()):
+	lyr = ds.GetLayerByIndex(i)
+	ds.CopyLayer(lyr, str(i))
+	del lyr
+
+"""
 QgsApplication.setPrefixPath("/usr/bin/qgis", True)
 
 # Create a reference to the QgsApplication.  Setting the
@@ -33,6 +48,9 @@ del vlayer
 # provider and layer registries from memory
 
 qgs.exitQgis()
+"""
+
+
 
 """
 n = QgsApplication.prefixPath()
