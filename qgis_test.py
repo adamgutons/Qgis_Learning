@@ -4,6 +4,13 @@ from osgeo import ogr
 
 
 def copy_shps():
+
+	input_gdb = raw_input("File geodatabase >> ")
+	output_folder = raw_input("Shapefile folder >> ")
+
+	print input_gdb
+
+
 	QgsApplication.setPrefixPath("/usr/bin/qgis", True)
 
 	# Create a reference to the QgsApplication.  Setting the
@@ -15,7 +22,8 @@ def copy_shps():
 
 	driver = ogr.GetDriverByName("OpenFileGDB")
 
-	ds = driver.Open("/home/bedevere/Qgis_Python/RH_SampleData.gdb")#, 0)
+	ds = driver.Open(input_gdb)
+	#ds = driver.Open("/home/bedevere/Qgis_Python/RH_SampleData.gdb")
 
 	layer_idxs = ds.GetLayerCount()
 
@@ -23,7 +31,8 @@ def copy_shps():
 
 
 	for lyr in range(layer_idxs):
-		uri = "/home/bedevere/Qgis_Python/RH_SampleData.gdb|layerid=%s" % lyr
+		uri = "%s|layerid=%s" % (input_gdb, lyr)
+		#uri = "/home/bedevere/Qgis_Python/RH_SampleData.gdb|layerid=%s" % lyr
 		ogr_layer = ds.GetLayer(lyr)
 		try:
 			layer = QgsVectorLayer(uri, "layer_name_you_like", "ogr")
@@ -44,7 +53,6 @@ def copy_shps():
 	del ds
 
 	qgs.exitQgis()
-
 
 copy_shps()
 
